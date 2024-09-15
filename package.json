@@ -1,0 +1,19 @@
+{
+  "name": "alarm-system",
+  "version": "1.0.0",
+  "description": "Alarm System in typescript",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup index.ts --format cjs,esm --dts",
+    "lint": "tsc"
+  },
+  "author": "Marcus Williford <mwilliford@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.8",
+    "tsup": "^8.2.4",
+    "typescript": "^5.6.2"
+  }
+}
