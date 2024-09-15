@@ -1,5 +1,5 @@
 {
-  "name": "mwilliford/alarm-system",
+  "name": "alarm-system",
   "version": "1.0.0",
   "description": "Alarm System in typescript",
   "main": "dist/index.js",
