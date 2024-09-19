@@ -27,6 +27,7 @@ function createZoneSchema<T extends ZoneTypes, U extends [string, ...string[]]>(
 // Alarm config functionality
 export const AlarmSensorRoles = ['immediate', 'delayed', 'tamper'] as const
 export const AlarmSensorRoleSchema = z.enum(AlarmSensorRoles)
+export type AlarmSensorRoleType = z.infer<typeof AlarmSensorRoleSchema>
 export const AlarmZoneSchema = createZoneSchema('Alarm', AlarmSensorRoleSchema)
 
 // Fire config functionality

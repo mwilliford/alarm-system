@@ -1,0 +1,61 @@
+import { SensorTracker } from '../sensor-tracker'
+
+describe('sensorTracker', () => {
+  it('should notify observers when a sensor is added', () => {
+    const tracker = new SensorTracker()
+    const observer = vi.fn()
+    tracker.registerSensorObserver(1, observer)
+    tracker.setSensorState(1, 'breach')
+    expect(observer).toHaveBeenCalledWith({ id: 1, state: 'breach' })
+  })
+  it('should not notify observers when a sensor is updated with the same state', () => {
+    const tracker = new SensorTracker()
+    const observer = vi.fn()
+    tracker.registerSensorObserver(1, observer)
+    tracker.setSensorState(1, 'breach')
+    tracker.setSensorState(1, 'breach')
+    expect(observer).toHaveBeenCalledTimes(1)
+  })
+  it('should notify observers when a sensor is updated with a different state', () => {
+    const tracker = new SensorTracker()
+    const observer = vi.fn()
+    tracker.registerSensorObserver(1, observer)
+    tracker.setSensorState(1, 'breach')
+    tracker.setSensorState(1, 'standby')
+    expect(observer).toHaveBeenCalledWith({ id: 1, state: 'standby' })
+  })
+  it('should notify multiple observers when a sensor is updated', () => {
+    const tracker = new SensorTracker()
+    const observer1 = vi.fn()
+    const observer2 = vi.fn()
+    tracker.registerSensorObserver(1, observer1)
+    tracker.registerSensorObserver(1, observer2)
+    tracker.setSensorState(1, 'breach')
+    expect(observer1).toHaveBeenCalledWith({ id: 1, state: 'breach' })
+    expect(observer2).toHaveBeenCalledWith({ id: 1, state: 'breach' })
+  })
+  it('should not notify observers for other sensors', () => {
+    const tracker = new SensorTracker()
+    const observer = vi.fn()
+    tracker.registerSensorObserver(1, observer)
+    tracker.setSensorState(2, 'breach')
+    expect(observer).not.toHaveBeenCalled()
+  })
+  it('should not notify observers after observers are removed', () => {
+    const tracker = new SensorTracker()
+    const observer = vi.fn()
+    tracker.registerSensorObserver(1, observer)
+    tracker.unregisterSensorObserver(1, observer)
+    tracker.setSensorState(1, 'breach')
+    expect(observer).not.toHaveBeenCalled()
+  })
+  it('should get correct sensor state', () => {
+    const tracker = new SensorTracker()
+    tracker.setSensorState(1, 'breach')
+    expect(tracker.getSensorState(1)).toEqual('breach')
+  })
+  it('should use default on getSensorState for unknown sensor', () => {
+    const tracker = new SensorTracker()
+    expect(tracker.getSensorState(1, 'breach')).toEqual('breach')
+  })
+})
